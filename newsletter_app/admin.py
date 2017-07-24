@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import Submission, Category, Admin_Pref
 
 class SubmissionAdmin(admin.ModelAdmin):
-    readonly_fields = ('created', 'modified')
+    readonly_fields = ('created', 'modified', 'author')
     list_display= ('title_german', 'month_year',
                    'author', 'finished')
     list_filter= ('finished','publish_date')
