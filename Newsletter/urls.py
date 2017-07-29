@@ -19,6 +19,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^newsletter/', include('newsletter_app.urls')),
+    ###Add the following line to the actual urls.py before deployment
+    url(r'^newsletter/', include('newsletter_app.urls', namespace='newsletter')),
     url(r'^accounts/login/$', auth_views.login)
 ]

@@ -1,0 +1,15 @@
+<h1>{{object.title_german}}</h1>
+<p>Category: {{object.category}}</p>
+{% if object.date %}
+    <p>Datum: {{object.date}}</p>
+{% endif %}
+<p>{{object.text_german}}</p>
+<p>Mehr Info: {{object.link_german}}</p>
+<h1>{{object.title_english}}</h1>
+<p>Category: {{object.category}}</p>
+{% if object.date %}
+    <p>Date: {{object.date}}</p>
+{% endif %}
+<p>{{object.text_english}}</p>
+<p>More Info: {{object.link_english}}</p>
+<p>Publish Date: {{object.publish_date}}</p>

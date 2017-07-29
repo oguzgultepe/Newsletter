@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.timezone import timedelta,now
-from django.forms import ModelForm, extras, ChoiceField
+from django.forms import ModelForm, ChoiceField, BooleanField
 from django.utils.translation import ugettext_lazy as _
 from django.forms.extras.widgets import SelectDateWidget
 
@@ -57,3 +57,5 @@ class SubmissionForm(ModelForm):
         help_texts = {
             'date': _('Optional'),
         }
+class EditForm(SubmissionForm):
+    delete = BooleanField()

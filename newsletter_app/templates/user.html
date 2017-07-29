@@ -1,0 +1,21 @@
+<h1>Unfinished Submissions</h1>
+{% if submissions_unfinished %}
+    <ul>
+    {% for submission in submissions_unfinished %}
+    <li><a href="{% url 'newsletter:edit' submission.id %}">{{submission.title_german}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No unfinished submissions.</p>
+{% endif %}
+
+<h1>Finished Submissions</h1>
+{% if submissions_finished %}
+    <ul>
+    {% for submission in submissions_finished %}
+    <li><a href="{% url 'newsletter:detail' submission.id%}">{{submission.title_german}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No finished submissions.</p>
+{% endif %}
