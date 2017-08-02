@@ -1,16 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from .models import SubmissionForm, Admin_Pref, Submission, EditForm
 from django.contrib.auth.decorators import login_required
-from datetime import date
+from datetime import date,timedelta
 from django.utils.timezone import now
 from django.views import generic
 
+from .models import Admin_Pref, Submission
+from . import forms
 @login_required
 def submit(request):
     if request.method == 'POST':
-        form = SubmissionForm(request.POST)
+        form = forms.SubmissionForm(request.POST)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.author = request.user
@@ -24,7 +25,7 @@ def submit(request):
             instance.save()
             return HttpResponseRedirect(reverse('newsletter:user'))
     else:
-        form= SubmissionForm()
+        form= forms.SubmissionForm()
 
     return render(request, 'submit.html', {'form':form})
 
@@ -49,7 +50,7 @@ def user(request):
 @login_required
 def edit(request,pk):
     if request.method == 'POST':
-        form = EditForm(request.POST)
+        form = forms.EditForm(request.POST)
         if form.is_valid():
             instance = get_object_or_404(Submission, pk=pk)
             if form.cleaned_data['delete']:
@@ -77,17 +78,33 @@ def edit(request,pk):
         submission = get_object_or_404(Submission, pk=pk)
         if submission.author!=request.user:
             return HttpResponse("You are not allowed to see this page")
-        form = EditForm(instance=submission)
+        form = forms.EditForm(instance=submission)
+        #TODO display the current publish month in the form
 
     return render(request, 'edit.html', {'form':form, 'submission_id':pk})
 
-#TODO
 def index(request):
-    return HttpResponse("You are visiting the display page.")
+    return render(request,'index.html')
 
 def display(request):
-    return HttpResponse("You are visiting the display page.")
-
-@login_required
-def send(request):
-    return HttpResponse("You are at the send page")
+    if 'year' in request.GET:
+        year = (int) (request.GET['year'])
+        if year == 0:
+            form = forms.DisplayForm()
+            context = {'form':form,'submission_list':None}
+            return render(request,'display.html',context)
+        this_year = (int) (now().strftime("%Y"))
+        if year == this_year:
+            form = forms.CurrentYearMonthForm(request.GET)
+        else:
+            form = forms.MonthForm(request.GET)
+        context = {'form':form,'submission_list':None}
+        if 'month' in request.GET:
+            month = (int) (request.GET['month'])
+            start = date(year,month,1)
+            end = start + timedelta(days=30)
+            context['submission_list'] = Submission.objects.filter(publish_date__gte=start,publish_date__lte=end)
+    else:
+        form = forms.DisplayForm()
+        context = {'form':form,'submission_list':None}
+    return render(request,'display.html',context)

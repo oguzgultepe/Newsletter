@@ -1,10 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.utils.timezone import timedelta,now
-from django.forms import ModelForm, ChoiceField, BooleanField
-from django.utils.translation import ugettext_lazy as _
-from django.forms.extras.widgets import SelectDateWidget
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -37,25 +33,3 @@ class Admin_Pref(models.Model):
     auto_send = models.BooleanField()
 
 
-class SubmissionForm(ModelForm):
-    MONTH_CHOICES= [(1,'January'),(2,'February'),(3,'March'),
-              (4,'April'),(5,'May'),(6,'June'),
-              (7,'July'),(8,'August'),(9,'September'),
-              (10,'October'),(11,'November'),(12,'December')]
-    current_day = (int) (now().strftime('%d'))
-    first_month = (int) (now().strftime('%m'))
-    if current_day>Admin_Pref.objects.first().last_entry_date:
-        first_month+=1
-    CHOICES = [MONTH_CHOICES[first_month%12],MONTH_CHOICES[(first_month+1)%12],MONTH_CHOICES[(first_month+2)%12]]
-    publish_month= ChoiceField(choices=CHOICES)
-    class Meta:
-        model = Submission
-        exclude = ['publish_date']
-        widgets = {
-            'date': SelectDateWidget
-        }
-        help_texts = {
-            'date': _('Optional'),
-        }
-class EditForm(SubmissionForm):
-    delete = BooleanField()

@@ -1,0 +1,12 @@
+<form action="{%url 'newsletter:display' %}" method="get">
+    {{form}}
+</form>
+<h1>Submissions</h1>
+{% if submission_list %}
+    <ul>
+    {% for submission in submission_list %}
+    <li><a href="{% url 'newsletter:detail' submission.id%}">{{submission.title_german}}</a></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
