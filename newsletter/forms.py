@@ -1,4 +1,4 @@
-from .models import Category, Submission, Admin_Pref
+from .models import Category, Submission, Admin_Pref, Subscriber
 from django.utils.timezone import timedelta,now
 from django.utils.translation import ugettext_lazy as _
 from django import forms
@@ -48,3 +48,8 @@ class MonthForm(DisplayForm):
 class CurrentYearMonthForm(DisplayForm):
     current_month = (int) (now().strftime("%m"))
     month = forms.ChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit();'}),choices=MONTH_CHOICES[:current_month], required=False)
+
+class SubscriberForm(forms.ModelForm):
+    class Meta:
+        model = Subscriber
+        fields = ['e_mail']

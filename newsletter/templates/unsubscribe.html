@@ -1,0 +1,14 @@
+<h1>Unsubscribe </h1>
+<h2>Enter your e-mail address to unsubscribe:</h2>
+<form action="{%url 'newsletter:unsubscribe' pk %}" method="post">
+    {% csrf_token %}
+    {{ form}}
+    <input type="submit" value="Unsubscribe!" />
+</form>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}

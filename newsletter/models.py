@@ -32,4 +32,7 @@ class Admin_Pref(models.Model):
     newsletter_mail_date = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(30)])
     auto_send = models.BooleanField()
 
-
+class Subscriber(models.Model):
+    e_mail = models.EmailField()
+    def __str__(self):
+        return self.e_mail

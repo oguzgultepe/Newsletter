@@ -2,11 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from datetime import date,timedelta
 from django.utils.timezone import now
 from django.views import generic
 
-from .models import Admin_Pref, Submission
+from .models import Admin_Pref, Submission, Subscriber
 from . import forms
 @login_required
 def submit(request):
@@ -25,7 +26,7 @@ def submit(request):
             instance.save()
             return HttpResponseRedirect(reverse('newsletter:user'))
     else:
-        form= forms.SubmissionForm()
+        form = forms.SubmissionForm()
 
     return render(request, 'submit.html', {'form':form})
 
@@ -84,7 +85,16 @@ def edit(request,pk):
     return render(request, 'edit.html', {'form':form, 'submission_id':pk})
 
 def index(request):
-    return render(request,'index.html')
+    if request.method == 'POST':
+        form = forms.SubscriberForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Subscribed!")
+            return HttpResponseRedirect(reverse('newsletter:index'))
+    else:
+        form = forms.SubscriberForm()
+
+    return render(request,'index.html', {'form':form})
 
 def display(request):
     if 'year' in request.GET:
@@ -108,3 +118,20 @@ def display(request):
         form = forms.DisplayForm()
         context = {'form':form,'submission_list':None}
     return render(request,'display.html',context)
+
+def unsubscribe(request,pk):
+    instance = get_object_or_404(Subscriber, pk=pk)
+    if request.method == 'POST':
+        form = forms.SubscriberForm(request.POST)
+        if form.is_valid():
+            if form.cleaned_data['e_mail'] == instance.e_mail:
+                instance.delete()
+                messages.success(request, "Unsubscribed!")
+                return HttpResponseRedirect(reverse('newsletter:index'))
+        messages.warning(request, "This e-mail address isn't correct")
+
+    else:
+        form = forms.SubscriberForm()
+    return render(request,'unsubscribe.html', {'form':form,'pk':pk})
+
+

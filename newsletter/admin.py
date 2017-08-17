@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Submission, Category, Admin_Pref
+from .models import Submission, Category, Admin_Pref, Subscriber
 
 class SubmissionAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'modified', 'author')
@@ -41,4 +41,5 @@ class SubmissionAdmin(admin.ModelAdmin):
 admin.site.register(Submission, SubmissionAdmin)
 admin.site.register(Category)
 admin.site.register(Admin_Pref)
-# Register your models here.
+#remove the next line after development
+admin.site.register(Subscriber)

@@ -7,18 +7,18 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('newsletter_app', '0004_auto_20170723_2111'),
+        ('newsletter', '0003_remove_category_requires_date'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='submission',
             name='created',
-            field=models.DateTimeField(auto_now_add=True),
+            field=models.DateTimeField(),
         ),
         migrations.AlterField(
             model_name='submission',
             name='modified',
-            field=models.DateTimeField(auto_now=True),
+            field=models.DateTimeField(),
         ),
     ]

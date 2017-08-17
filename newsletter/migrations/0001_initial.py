@@ -49,7 +49,7 @@ class Migration(migrations.Migration):
                 ('created', models.DateTimeField()),
                 ('modified', models.DateTimeField()),
                 ('author', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('category', models.ForeignKey(to='newsletter_app.Category')),
+                ('category', models.ForeignKey(to='newsletter.Category')),
             ],
         ),
     ]
