@@ -20,7 +20,7 @@ class SubmissionForm(forms.ModelForm):
     publish_month= forms.ChoiceField(choices=CHOICES)
     class Meta:
         model = Submission
-        exclude = ['publish_date']
+        exclude = ['month','year']
         widgets = {
             'date': SelectDateWidget
         }
@@ -31,9 +31,9 @@ class EditForm(SubmissionForm):
     delete = forms.BooleanField(required=False)
 
 class DisplayForm(forms.Form):
-    date_info = Submission.objects.aggregate(Min("publish_date"),Max("publish_date"))
-    start_year = (int) (date_info['publish_date__min'].strftime("%Y"))
-    end_year = (int) (date_info['publish_date__max'].strftime("%Y"))
+    years = Submission.objects.aggregate(Min("year"),Max("year"))
+    start_year = years['year__min']
+    end_year = years['year__max']
     this_year = (int) (now().strftime("%Y"))
     if end_year > this_year:
         end_year = this_year

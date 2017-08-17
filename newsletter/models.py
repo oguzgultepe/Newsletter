@@ -3,10 +3,11 @@ from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Category(models.Model):
-    name = models.CharField(max_length=50)
+    name_german = models.CharField(max_length=50)
+    name_english = models.CharField(max_length=50)
     priority = models.IntegerField()
     def __str__(self):
-        return self.name
+        return self.name_german
 
 class Submission(models.Model):
     title_german = models.CharField(max_length=50)
@@ -17,7 +18,8 @@ class Submission(models.Model):
     category = models.ForeignKey(Category)
     link_german = models.URLField()
     link_english = models.URLField()
-    publish_date = models.DateField()
+    month = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(12)])
+    year = models.IntegerField()
     date = models.DateField(null= True, blank=True)
     finished = models.BooleanField(default=False)
     created= models.DateTimeField(auto_now_add=True)
@@ -36,3 +38,9 @@ class Subscriber(models.Model):
     e_mail = models.EmailField()
     def __str__(self):
         return self.e_mail
+
+class Introduction(models.Model):
+    german_text = models.TextField(max_length=1000)
+    english_text = models.TextField(max_length=1000)
+    month = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(12)])
+    year = models.IntegerField()

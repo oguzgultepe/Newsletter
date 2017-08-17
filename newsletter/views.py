@@ -21,8 +21,8 @@ def submit(request):
             publish_month = (int)(form.cleaned_data['publish_month'])
             if current_month>9 & publish_month<4:
                publish_year += 1
-            instance.publish_date = date(publish_year, publish_month,
-                                         Admin_Pref.objects.first().newsletter_mail_date)
+            instance.month = publish_month
+            instance.year = publish_year
             instance.save()
             return HttpResponseRedirect(reverse('newsletter:user'))
     else:
@@ -33,9 +33,6 @@ def submit(request):
 class DetailView(generic.DetailView):
     model = Submission
     template_name = 'detail.html'
-    fields= ['title_german', 'text_german', 'link_german',
-             'title_english', 'text_english', 'link_english',
-             'category', 'publish_date', 'date']
 
 @login_required
 def user(request):
@@ -71,16 +68,16 @@ def edit(request,pk):
             publish_month = (int)(form.cleaned_data['publish_month'])
             if current_month>9 & publish_month<4:
                publish_year += 1
-            instance.publish_date = date(publish_year, publish_month,
-                                         Admin_Pref.objects.first().newsletter_mail_date)
+            instance.month = publish_month
+            instance.year = publish_year
             instance.save()
             return HttpResponseRedirect(reverse('newsletter:user'))
     else:
         submission = get_object_or_404(Submission, pk=pk)
         if submission.author!=request.user:
             return HttpResponse("You are not allowed to see this page")
-        form = forms.EditForm(instance=submission)
-        #TODO display the current publish month in the form
+        form = forms.EditForm(instance=submission,
+                              initial={'publish_month':submission.month})
 
     return render(request, 'edit.html', {'form':form, 'submission_id':pk})
 
@@ -113,7 +110,8 @@ def display(request):
             month = (int) (request.GET['month'])
             start = date(year,month,1)
             end = start + timedelta(days=30)
-            context['submission_list'] = Submission.objects.filter(publish_date__gte=start,publish_date__lte=end)
+            context['submission_list'] = Submission.objects.filter(year=year,
+                                                                   month=month)
     else:
         form = forms.DisplayForm()
         context = {'form':form,'submission_list':None}
