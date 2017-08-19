@@ -6,6 +6,8 @@ from django.contrib import messages
 from datetime import date,timedelta
 from django.utils.timezone import now
 from django.views import generic
+from django.core.management.base import CommandError
+from django.core.management import call_command
 
 from .models import Admin_Pref, Submission, Subscriber
 from . import forms
@@ -132,4 +134,31 @@ def unsubscribe(request,pk):
         form = forms.SubscriberForm()
     return render(request,'unsubscribe.html', {'form':form,'pk':pk})
 
+## mtype 1 for reminder, 2 for newsletter
+@login_required
+def send(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to view this page!')
+    return render(request,'send.html')
 
+
+@login_required
+def send_newsletter(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to view this page!')
+    try:
+        call_command('send_newsletter')
+    except CommandError as c:
+        return HttpResponse(str(c.message))
+    return HttpResponse("Newsletter sent!")
+
+
+@login_required
+def send_reminder(request):
+    if not request.user.is_superuser:
+        return HttpResponseForbidden('You do not have permission to view this page!')
+    try:
+        call_command('send_reminder')
+    except CommandError as c:
+        return HttpResponse(str(c.message))
+    return HttpResponse("Reminder sent!")

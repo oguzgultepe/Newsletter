@@ -1,0 +1,9 @@
+<form action="{%url 'newsletter:send_reminder' %}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Send Reminder" />
+</form>
+
+<form action="{%url 'newsletter:send_newsletter' %}" method="get">
+    {% csrf_token %}
+    <input type="submit" value="Send Newsletter" />
+</form>

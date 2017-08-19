@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.management import call_command
 
 class Category(models.Model):
     name_german = models.CharField(max_length=50)
@@ -35,6 +36,10 @@ class Admin_Pref(models.Model):
     last_entry_date = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(30)])
     newsletter_mail_date = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(30)])
     auto_send = models.BooleanField()
+    def save(self, *args, **kwargs):
+        super(Admin_Pref, self).save(*args, **kwargs)
+        call_command('schedule')
+
 
 class Subscriber(models.Model):
     e_mail = models.EmailField()

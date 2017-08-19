@@ -19,8 +19,9 @@ def generate_newsletter(month, year):
         if c.has_date:
             temp.order_by('date')
         for submission in temp:
-            newsletter += "{0}. {1} \n".format(counter, submission.title_german)
-            counter+=1
+            if submission.finished:
+                newsletter += "{0}. {1} \n".format(counter, submission.title_german)
+                counter+=1
         newsletter += "\n"
     counter = 1
     for c in categories:
@@ -29,15 +30,16 @@ def generate_newsletter(month, year):
         if c.has_date:
             temp.order_by('date')
         for submission in temp:
-            newsletter += "{0}. {1} \n".format(counter, submission.title_german)
-            if c.has_date:
-                if submission.enddate is not None:
-                    newsletter += "Vom {0} bis {1}\n".format(submission.date, submission.enddate)
-                else:
-                    newsletter += "Am {0}\n".format(submission.date)
-            newsletter += "{0} \n\n".format(submission.text_german)
-            newsletter += "{0} \n\n".format(submission.link_german)
-            counter+=1
+            if submission.finished:
+                newsletter += "{0}. {1} \n".format(counter, submission.title_german)
+                if c.has_date:
+                    if submission.enddate is not None:
+                        newsletter += "Vom {0} bis {1}\n".format(submission.date.strftime('%d/%m/%y'), submission.enddate.strftime('%d/%m/%y'))
+                    else:
+                        newsletter += "Am {0}\n".format(submission.date.strftime('%d/%m/%y'))
+                newsletter += "{0} \n\n".format(submission.text_german)
+                newsletter += "{0} \n\n".format(submission.link_german)
+                counter+=1
         newsletter += "\n"
     newsletter += """Wenn euch der Newsletter gefallen hat, \
 würden wir uns freuen, wenn ihr ihn \
@@ -58,8 +60,9 @@ Eure Fachschaft MPI"""
         if c.has_date:
             temp.order_by('date')
         for submission in temp:
-            newsletter += "{0}. {1} \n".format(counter, submission.title_english)
-            counter+=1
+            if submission.finished:
+                newsletter += "{0}. {1} \n".format(counter, submission.title_english)
+                counter+=1
         newsletter += "\n"
     counter = 1
     for c in categories:
@@ -68,15 +71,16 @@ Eure Fachschaft MPI"""
         if c.has_date:
             temp.order_by('date')
         for submission in temp:
-            if c.has_date:
-                if submission.enddate is not None:
-                    newsletter += "From {0} to {1}\n".format(submission.date, submission.enddate)
-                else:
-                    newsletter += "On {0}\n".format(submission.date)
-            newsletter += "{0}. {1} \n".format(counter, submission.title_english)
-            newsletter += "{0} \n\n".format(submission.text_english)
-            newsletter += "{0} \n\n".format(submission.link_english)
-            counter+=1
+            if submission.finished:
+                if c.has_date:
+                    if submission.enddate is not None:
+                        newsletter += "From {0} to {1}\n".format(submission.date.strftime('%d/%m/%y'), submission.enddate.strftime('%d/%m/%y'))
+                    else:
+                        newsletter += "On {0}\n".format(submission.date.strftime('%d/%m/%y'))
+                newsletter += "{0}. {1} \n".format(counter, submission.title_english)
+                newsletter += "{0} \n\n".format(submission.text_english)
+                newsletter += "{0} \n\n".format(submission.link_english)
+                counter+=1
         newsletter += "\n"
     newsletter += """If you like our newsletter, we would appreciate it if you recommend the\
 newsletter to your friends.
