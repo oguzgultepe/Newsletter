@@ -22,10 +22,12 @@ class SubmissionForm(forms.ModelForm):
         model = Submission
         exclude = ['month','year']
         widgets = {
-            'date': SelectDateWidget
+            'date': SelectDateWidget,
+            'enddate': SelectDateWidget
         }
         help_texts = {
             'date': _('Optional'),
+            'enddate': _('Optional'),
         }
 class EditForm(SubmissionForm):
     delete = forms.BooleanField(required=False)
