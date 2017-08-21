@@ -1,3 +1,7 @@
+{% extends "newsletter_base.html" %}
+
+{% block title %}Unsubscribe{% endblock %}
+{% block content %}
 <h1>Unsubscribe </h1>
 <h2>Enter your e-mail address to unsubscribe:</h2>
 <form action="{%url 'newsletter:unsubscribe' pk %}" method="post">
@@ -12,3 +16,4 @@
     {% endfor %}
 </ul>
 {% endif %}
+{% endblock %}

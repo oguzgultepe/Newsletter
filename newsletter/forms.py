@@ -6,7 +6,7 @@ from django.forms.extras.widgets import SelectDateWidget
 from django.db.models import Min, Max
 
 
-MONTH_CHOICES= [(1,'January'),(2,'February'),(3,'March'),
+MONTH_CHOICES= [(0,'Please select a month'),(1,'January'),(2,'February'),(3,'March'),
           (4,'April'),(5,'May'),(6,'June'),
           (7,'July'),(8,'August'),(9,'September'),
           (10,'October'),(11,'November'),(12,'December')]
@@ -16,7 +16,7 @@ class SubmissionForm(forms.ModelForm):
     first_month = (int) (now().strftime('%m'))
     if current_day>Admin_Pref.objects.first().last_entry_date:
         first_month+=1
-    CHOICES = [MONTH_CHOICES[first_month%12],MONTH_CHOICES[(first_month+1)%12],MONTH_CHOICES[(first_month+2)%12]]
+    CHOICES = [MONTH_CHOICES[first_month+1%12],MONTH_CHOICES[(first_month+2)%12],MONTH_CHOICES[(first_month+3)%12]]
     publish_month= forms.ChoiceField(choices=CHOICES)
     class Meta:
         model = Submission
@@ -49,7 +49,9 @@ class MonthForm(DisplayForm):
 
 class CurrentYearMonthForm(DisplayForm):
     current_month = (int) (now().strftime("%m"))
-    month = forms.ChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit();'}),choices=MONTH_CHOICES[:current_month], required=False)
+    if (int) (now().strftime('%d')) > Admin_Pref.objects.first().newsletter_mail_date:
+        current_month += 1
+    month = forms.ChoiceField(widget=forms.Select(attrs={'onchange':'this.form.submit();'}),choices=MONTH_CHOICES[:current_month+1], required=False)
 
 class SubscriberForm(forms.ModelForm):
     class Meta:

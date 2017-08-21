@@ -1,5 +1,10 @@
+{% extends "newsletter_base.html" %}
+
+{% block title %}Submit{% endblock %}
+{% block content %}
 <form action="{%url 'newsletter:submit' %}" method="post">
     {% csrf_token %}
     {{ form.as_p}}
     <input type="submit" value="Submit" />
 </form>
+{% endblock %}

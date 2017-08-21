@@ -110,10 +110,13 @@ def display(request):
         context = {'form':form,'submission_list':None}
         if 'month' in request.GET:
             month = (int) (request.GET['month'])
-            start = date(year,month,1)
-            end = start + timedelta(days=30)
+            if month == 0:
+                form = forms.DisplayForm()
+                context = {'form':form,'submission_list':None}
+                return render(request,'display.html',context)
             context['submission_list'] = Submission.objects.filter(year=year,
-                                                                   month=month)
+                                                                   month=month,
+                                                                  finished=True)
     else:
         form = forms.DisplayForm()
         context = {'form':form,'submission_list':None}

@@ -1,5 +1,2 @@
-<form action="{%url 'newsletter:edit' submission_id %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p}}
-    <input type="submit" value="Save" />
-</form>
+{% extends "submit.html" %}
+{% block title %}Edit{% endblock %}

@@ -1,12 +1,18 @@
+{% extends "newsletter_base.html" %}
+{% block title %}Past Newsletters{% endblock %}
+{% block sidebar %}
 <form action="{%url 'newsletter:display' %}" method="get">
-    {{form}}
+    {{form.as_p}}
 </form>
+{% endblock %}
+{% block content %}
 <h1>Submissions</h1>
 {% if submission_list %}
     <ul>
     {% for submission in submission_list %}
-    <li><a href="{% url 'newsletter:detail' submission.id%}">{{submission.title_german}}</a></li>
+    <b><li style="padding:0.7em;"><a href="{% url 'newsletter:detail' submission.id%}">{{submission.title_german}}</a></li></b>
     {% endfor %}
     </ul>
 {% endif %}
+{% endblock %}
 

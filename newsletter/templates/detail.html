@@ -1,15 +1,19 @@
+{% extends "newsletter_base.html" %}
+{% block title %}Newsletter Detail{% endblock %}
+{%block content %}
 <h1>{{object.title_german}}</h1>
 <p>Category: {{object.category}}</p>
 {% if object.date %}
     <p>Datum: {{object.date}}</p>
 {% endif %}
 <p>{{object.text_german}}</p>
-<p>Mehr Info: {{object.link_german}}</p>
+<a href="{{object.link_german}}">Mehr Info</a>
 <h1>{{object.title_english}}</h1>
-<p>Category: {{object.category}}</p>
+<p>Category: {{object.category.name_english}}</p>
 {% if object.date %}
     <p>Date: {{object.date}}</p>
 {% endif %}
 <p>{{object.text_english}}</p>
-<p>More Info: {{object.link_english}}</p>
-<p>Publish Month: {{object.month}}/{{object.year}}</p>
+<a href="{{object.link_english}}">More Info</a>
+<p style="padding:2em;">Publish Month: {{object.month}}/{{object.year}}</p>
+{% endblock %}

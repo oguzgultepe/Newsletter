@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- With the help of w3schools.com bootstrap templates-->
+<head>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'newsletter/style.css' %}" />
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+  <title>{% block title %}Newsletter Tool{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+  <style>
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0; 	
+    }
+    
+    .row.content {height: 100%}
+    
+    .sidenav {
+      padding-top: 20px;
+      height: 100%;
+    }
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="{% url 'newsletter:index' %}">Newsletter</a>
+      </div>
+      <div class="collapse navbar-collapse" id="mNavbar">
+        <ul class="nav navbar-nav">
+          <li><a href="{% url 'newsletter:submit' %}">Submit</a></li>
+          <li><a href="{% url 'newsletter:display' %}">Past Newsletters</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="{% url 'newsletter:user' %}">My Submissions</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid text-center">    
+    <div class="row content">
+      <div class="col-sm-2 sidenav">
+        {% block sidebar %}{% endblock %}
+      </div>
+      <div style="padding-top:2em" class="col-sm-8 text-center"> 
+        {% block content %}{% endblock %}
+      </div>
+</body>
+</html>

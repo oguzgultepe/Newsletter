@@ -1,0 +1,10 @@
+body {
+    background:url("images/fslogo.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    background-size: contain;
+}
+li {
+	list-style-type: none;
+}

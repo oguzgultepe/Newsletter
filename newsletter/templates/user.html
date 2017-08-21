@@ -1,3 +1,7 @@
+{% extends "newsletter_base.html" %}
+
+{% block title %}User Page{% endblock %}
+{% block content %}
 <h1>Unfinished Submissions</h1>
 {% if submissions_unfinished %}
     <ul>
@@ -8,7 +12,9 @@
 {% else %}
     <p>No unfinished submissions.</p>
 {% endif %}
+{% endblock %}
 
+{% block sidebar %}
 <h1>Finished Submissions</h1>
 {% if submissions_finished %}
     <ul>
@@ -19,3 +25,4 @@
 {% else %}
     <p>No finished submissions.</p>
 {% endif %}
+{% endblock %}

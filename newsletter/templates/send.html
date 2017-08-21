@@ -1,9 +1,15 @@
-<form action="{%url 'newsletter:send_reminder' %}" method="get">
+{% extends "newsletter_base.html" %}
+
+{% block title %}Send Newsletter{% endblock %}
+{% block content %}
+
+<form style= "padding:5em;" action="{%url 'newsletter:send_reminder' %}" method="get">
     {% csrf_token %}
     <input type="submit" value="Send Reminder" />
 </form>
 
-<form action="{%url 'newsletter:send_newsletter' %}" method="get">
+<form style= "padding:2em;" action="{%url 'newsletter:send_newsletter' %}" method="get">
     {% csrf_token %}
     <input type="submit" value="Send Newsletter" />
 </form>
+{% endblock %}
