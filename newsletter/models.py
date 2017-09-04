@@ -36,6 +36,7 @@ class Admin_Pref(models.Model):
     last_entry_date = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(30)])
     newsletter_mail_date = models.IntegerField(validators=[MinValueValidator(1),MaxValueValidator(30)])
     auto_send = models.BooleanField()
+    sender = models.EmailField("Sender Address")
     def save(self, *args, **kwargs):
         super(Admin_Pref, self).save(*args, **kwargs)
         call_command('schedule')

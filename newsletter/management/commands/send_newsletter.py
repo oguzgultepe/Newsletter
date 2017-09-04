@@ -5,7 +5,8 @@ from django.utils.timezone import now
 from django.core.mail import send_mass_mail
 from smtplib import SMTPException
 from django.urls import reverse
-from ...models import Subscriber, Submission, Category, Introduction
+from ...models import Subscriber, Submission, Category, Introduction, Admin_Pref
+from_mail = Admin_Pref.objects.first().sender
 def generate_newsletter(month, year):
     submissions = Submission.objects.filter(month=month, year=year)
     newsletter = "--English version below--\n\n"
@@ -131,7 +132,6 @@ class Command(BaseCommand):
                  'July', 'August', 'September',
                  'October', 'November', 'December']
         subject = "{0} Newsletter".format(MONTHS[month])
-        from_mail = "mpinewsletter@fs.tum.de"
         newsletter = generate_newsletter(month+1, year)
         subscribers = Subscriber.objects.all()
         mail_list = []

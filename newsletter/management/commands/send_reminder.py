@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from smtplib import SMTPException
 
-day = Admin_Pref.objects.first().last_entry_date
+pref = Admin_Pref.objects.first()
+day = pref.last_entry_date
+from_mail = pref.sender
 month = (((int) (now().strftime('%m')))-1)%12
 MONTHS= ['January', 'February', 'March',
          'April' ,'May' ,'June',
@@ -28,7 +30,7 @@ class Command(BaseCommand):
             send_mail(
                 'Newsletter Reminder',
                 reminder_text,
-                'mpinewsletter@fs.tum.de',
+                from_mail,
                 email_list,
                 fail_silently=False
             )
